@@ -15,28 +15,25 @@ def compute_vic(tumor_mask, ablation_mask, liver_mask, spacing_mm, exclusion_dis
     """
 
     distmap_mask =  ndimage.morphology.distance_transform_edt(~tumor_mask, sampling=spacing_mm)
-
-    # distmap_nib = nib.Nifti1Image(distmap_mask.astype(np.uint8), affine = np.eye(4))
-    # nib.save(distmap_nib, "distmap.nii.gz")
-
     voxel_volume = spacing_mm[0] * spacing_mm[1] * spacing_mm[2]
 
     ablation_mask = ablation_mask.astype(np.int8)
+    if liver_mask is not None:
+        # print('has liver mask')
+        liver_mask = liver_mask.astype(np.int8)
+        distmap_exclusion = ndimage.morphology.distance_transform_edt(liver_mask, sampling=spacing_mm)
+        distmap_mask[distmap_exclusion <= exclusion_distance] = np.inf
 
     vic_ml = []
 
     for i in range(0, 11):
         volume_added_margin = (distmap_mask <= i).astype(np.int8)
-        # volume_added_margin_nib = nib.Nifti1Image(volume_added_margin.astype(np.int8), affine = np.eye(4))
-        # nib.save(volume_added_margin_nib, "added_margin_{0}.nii.gz".format(i))
         ablation_volume = np.count_nonzero(ablation_mask) * voxel_volume / 1000.0
         tumor_volume = np.count_nonzero(volume_added_margin) * voxel_volume / 1000.0
         insufficient_volume = (volume_added_margin - ablation_mask) > 0
-        # insufficient_nib = nib.Nifti1Image(insufficient_volume.astype(np.int8), affine = np.eye(4))
-        # nib.save(insufficient_nib, "insufficient_{0}.nii.gz".format(i))
         volume_insufficient_margin = np.count_nonzero(insufficient_volume) * voxel_volume
         vic_ml.append(volume_insufficient_margin / 1000.0)
-        print("VIC {0} = {1}\t({2} - {3})".format(i, vic_ml[i], tumor_volume, ablation_volume))
+        # print("VIC {0} = {1}\t({2} - {3})".format(i, vic_ml[i], tumor_volume, ablation_volume))
 
     return vic_ml
 
