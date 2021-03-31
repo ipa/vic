@@ -1,0 +1,3 @@
+*.nii.gz
+__pycache__/
+test_data/
