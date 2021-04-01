@@ -1,3 +1,6 @@
+build/
+dist/
+*.egg-info/
 *.nii.gz
 __pycache__/
 test_data/
