@@ -11,8 +11,8 @@ from datetime import date
 import numpy as np
 import pandas as pd
 
-from utils.niftireader import load_image
-from volume import compute_vic, summarize_vic
+from vic.utils.niftireader import load_image
+from vic.volume import compute_vic, summarize_vic
 
 np.set_printoptions(suppress=True, precision=4)
 

@@ -6,7 +6,7 @@ source_root = Path(".")
 with open(source_root / "README.md", "r") as fh:
     long_description = fh.read()
 
-version = "0.1.0"
+version = "0.1.2"
 
 with open(source_root / "vic" / "version.py", "w") as fh:
     fh.writelines([
