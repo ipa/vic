@@ -3,7 +3,7 @@ import sys
 sys.path.insert(0, "..")
 import os
 import unittest
-from vic.vic import volume
+from vic.vic import vic
 from vic.vic.utils import niftireader
 
 OUTPUT_FILE = 'data/_output/Grouped.csv'
