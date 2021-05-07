@@ -1,16 +1,14 @@
 import numpy as np
 from scipy import ndimage
-import pandas as pd
-import nibabel as nib
 
 def compute_vic(tumor_mask, ablation_mask, liver_mask, spacing_mm, exclusion_distance=5):
     """
     Function computing the surface distances between 2 binary segmentation Nifti images.
-    :param tumor_mask: tumor file in Nifti (NiBabel) format
-    :param ablation_mask: ablation file in Nifti (NiBabel) format
-    :param liver_mask: liver file Nifti (NiBabel) format
-    :param spacing_mm: spacing extracted from the Nifti files provided above. spacing should be the same for all.
-    :param exclusion_distance: The exclusion distance to "remove" voxels from the liver capsule within this distance. Works only for subcapsular cases when liver segmentation provided.
+    :param tumor_mask: tumor file in numpy format
+    :param ablation_mask: ablation file innumpy format
+    :param liver_mask: liver file numpy format
+    :param spacing_mm: spacing of the volumes provided above. spacing should be the same for all.
+    :param exclusion_distance: The exclusion distance to "remove" voxels from the liver mask.
     :return: List of Volumes of insufficient ablation with 0-10 mm margin
     """
 
@@ -39,7 +37,7 @@ def compute_vic(tumor_mask, ablation_mask, liver_mask, spacing_mm, exclusion_dis
 
 
 def summarize_vic(subject_id, tumor_id, vic_ml):
-    df = pd.DataFrame(data=[{
+    data={
             'Subject': subject_id,
             'Tumor': tumor_id,
             'VIC_0': vic_ml[0],
@@ -52,5 +50,5 @@ def summarize_vic(subject_id, tumor_id, vic_ml):
             'VIC_7': vic_ml[7],
             'VIC_8': vic_ml[8],
             'VIC_9': vic_ml[9],
-            'VIC_10': vic_ml[10]}])
-    return df
+            'VIC_10': vic_ml[10]}
+    return data
