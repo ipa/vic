@@ -61,5 +61,6 @@ if __name__ == '__main__':
 
     vic_ml = compute_vic(tumor_np, ablation_np, liver_np, spacing)
     print(vic_ml)
-    df = summarize_vic(subject_id, tumor_id, vic_ml)
+    data = summarize_vic(subject_id, tumor_id, vic_ml)
+    df = pd.DataFrame([data])
     df.to_csv(output_file, index=False, float_format='%.4f')
