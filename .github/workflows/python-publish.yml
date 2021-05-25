@@ -26,4 +26,12 @@ jobs:
       run: |
         python setup.py bdist_wheel --universal
         python setup.py sdist
-        
+    - name: Upload binaries to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: dist/volume_of_insufficient_coverage-0.1.2-py3-none-any.whl
+        asset_name: mything
+        tag: ${{ github.ref }}
+        overwrite: true
+        body: "..."
